@@ -3,6 +3,9 @@ const express = require("express");
 const port = 8080;
 const app = express();
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+
+app.use(bodyParser.json());
 
 
 app.listen(port, () => {
@@ -17,12 +20,6 @@ const accountsRouter = require("./routes/accounts");
 const budgetsRouter = require("./routes/budgets");
 const expenseRouter = require("./routes/expense");
 const incomeRouter = require("./routes/income");
-
-const Expense = require("./models/expense");
-
-app.get("/", (request,response)=>{
-    console.log(Expense)
-})
 
 app.use("/api/v1/accounts", accountsRouter);
 app.use("/api/v1/budgets", budgetsRouter);
