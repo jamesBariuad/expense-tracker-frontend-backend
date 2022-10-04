@@ -4,7 +4,10 @@ const port = 8080;
 const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
+
+app.use(cors());
 app.use(bodyParser.json());
 
 
