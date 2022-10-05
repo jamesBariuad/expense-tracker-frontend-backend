@@ -1,9 +1,10 @@
 import React from 'react'
 
 const DisplayExpense = ({expense}) => {
+  
     const display = expense?.map((expense) => {
         return (
-          <div key={expense._id}>
+          <div key={expense._id} >
             description: {expense.description}
             <br></br>
             category: {expense.category}

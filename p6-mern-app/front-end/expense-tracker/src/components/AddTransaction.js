@@ -20,7 +20,6 @@ const AddTransaction = ({ dispatch }) => {
           ...addItem,
           type: e.target.value,
         });
-
         break;
       case "description":
         setAddItem({
@@ -99,7 +98,6 @@ const AddTransaction = ({ dispatch }) => {
     });
   };
   const handleSubmit = () => {
-    console.log(addItem.type.toUpperCase())
     dispatch({
       type: `ADD_TRANSACTION_${addItem.type.toUpperCase()}`,
       payload: addItem,

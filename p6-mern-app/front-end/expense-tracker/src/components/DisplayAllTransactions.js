@@ -1,22 +1,25 @@
 import React, { useState } from "react";
+import DeleteTransaction from "./DeleteTransaction";
 import EditTransaction from "./EditTransaction";
 
-const DisplayAllTransactions = ({ income, expense }) => {
-  const addTypeToIncome = income.map((incomeObject) => ({
+const DisplayAllTransactions = ({ income, expense, dispatch }) => {
+  const addTypeToIncome = income?.map((incomeObject) => ({
     ...incomeObject,
     type: "income",
   }));
-  const addTypeToExpense = expense.map((expenseObject) => ({
+  const addTypeToExpense = expense?.map((expenseObject) => ({
     ...expenseObject,
     type: "expense",
   }));
-  const allTransactions = addTypeToIncome.concat(addTypeToExpense);
+  const allTransactions = addTypeToIncome?.concat(addTypeToExpense);
 
-  const sortedNewestFirst = allTransactions.sort(
+  const sortedNewestFirst = allTransactions?.sort(
     (a, b) => -a.date.localeCompare(b.date)
   );
 
   const [toggleEdit, setToggleEdit] = useState(false);
+  const [toggleDelete, setToggleDelete] = useState(false);
+  const [clickedId, setClickedId] = useState("");
 
   const handleEdit = (e) => {
     setToggleEdit(true);
@@ -27,12 +30,28 @@ const DisplayAllTransactions = ({ income, expense }) => {
   };
 
   const handleDelete = (e) => {
-    console.log(e.target.id);
+    setToggleDelete(true);
+    setClickedId(e.target.id);
   };
 
-  const [clickedId, setClickedId] = useState("");
+  const closeDelete = () => {
+    setToggleDelete(false);
+  };
 
-  const display = sortedNewestFirst.map((item) => {
+  const deleteConfirmed = (transaction) => {
+    // console.log(clickedId,transaction[0].type.toUpperCase())
+    // const type =
+    // console.log(transaction[0].type.toUpperCase())
+
+    dispatch({
+      type: `DELETE_${transaction[0].type.toUpperCase()}`,
+      payload: {
+        id: clickedId,
+      },
+    });
+  };
+
+  const display = sortedNewestFirst?.map((item) => {
     return (
       <div key={item._id}>
         {item.type}
@@ -67,6 +86,19 @@ const DisplayAllTransactions = ({ income, expense }) => {
               id={clickedId}
               transactions={sortedNewestFirst}
               closeEdit={closeEdit}
+              dispatch={dispatch}
+            />
+          ) : (
+            false
+          )}
+        </div>
+        <div>
+          {toggleDelete ? (
+            <DeleteTransaction
+              id={clickedId}
+              closeDelete={closeDelete}
+              deleteConfirmed={deleteConfirmed}
+              transactions={sortedNewestFirst}
             />
           ) : (
             false

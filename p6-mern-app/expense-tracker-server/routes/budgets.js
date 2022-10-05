@@ -21,7 +21,7 @@ router.get("/:id", (request, response) => {
   Budgets.findById({ _id: request.params.id }).then((data) => {
     data===null?(response.status(404), response.send({message: `budget with id: ${request.params.id} does not exist!`})) : 
     response.send(data)
-    console.log(data)
+  
   });
 });
 

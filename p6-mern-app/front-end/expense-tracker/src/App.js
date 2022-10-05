@@ -6,7 +6,6 @@ import AddTransaction from "./components/AddTransaction";
 import DisplayExpense from "./components/DisplayExpense";
 import DisplayAllTransactions from "./components/DisplayAllTransactions";
 
-
 function App() {
   const initialState = {
     accounts: [],
@@ -15,7 +14,6 @@ function App() {
     expense: [],
     trigger: [],
   };
-
 
   const reducer = (state, action) => {
     switch (action.type) {
@@ -54,6 +52,66 @@ function App() {
           .post("http://localhost:8080/api/v1/expense", action.payload)
           .then((response) => {});
         return { ...state, expense: [...state.expense, action.payload] };
+
+      case "DELETE_INCOME":
+        axios
+          .delete(`http://localhost:8080/api/v1/income/${action.payload.id}`)
+          .then((response) => {});
+        return {
+          ...state,
+          income: state.income.filter(
+            (transaction) => transaction._id !== action.payload.id
+          ),
+        };
+
+      case "DELETE_EXPENSE":
+        axios
+          .delete(`http://localhost:8080/api/v1/expense/${action.payload.id}`)
+          .then((response) => {});
+        return {
+          ...state,
+          expense: state.expense.filter(
+            (transaction) => transaction._id !== action.payload.id
+          ),
+        };
+
+      case "EDIT_EXPENSE":
+        axios
+          .put(
+            `http://localhost:8080/api/v1/expense/${action.payload.id}`,
+            action.payload
+          )
+          .then((response) => {});
+        return {
+          ...state,
+          expense: state.expense.map((expense) => {
+            if (expense._id === action.payload.id) {
+              expense.description = action.payload.description;
+              expense.category = action.payload.category;
+              expense.value = action.payload.value;
+            }
+            return expense;
+          }),
+        };
+
+      case "EDIT_INCOME":
+        axios
+          .put(
+            `http://localhost:8080/api/v1/income/${action.payload.id}`,
+            action.payload
+          )
+          .then((response) => {});
+        return {
+          ...state,
+          income: state.income.map((income) => {
+            if (income._id === action.payload.id) {
+              income.description = action.payload.description;
+              income.category = action.payload.category;
+              income.value = action.payload.value;
+            }
+            return income;
+          }),
+        };
 
       default: {
         return alert("sumting wong");
@@ -102,14 +160,16 @@ function App() {
 
   return (
     <div>
-
       <DisplayIncome income={state?.income} />
       <AddTransaction dispatch={dispatch} />
       <br></br>
-      <DisplayExpense expense = {state?.expense}/>
+      <DisplayExpense expense={state?.expense} />
       <br></br>
-      <DisplayAllTransactions income={state?.income} expense={state?.expense}/>
-
+      <DisplayAllTransactions
+        income={state?.income}
+        expense={state?.expense}
+        dispatch={dispatch}
+      />
     </div>
   );
 }

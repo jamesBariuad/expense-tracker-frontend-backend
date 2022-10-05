@@ -2,13 +2,15 @@ import React, { useState } from "react";
 
 const EditTransaction = ({ id, dispatch, transactions, closeEdit }) => {
   // console.log(transactions)
-  const selected = transactions.filter((transaction) => transaction._id === id);
-
+  const selected = transactions?.filter(
+    (transaction) => transaction._id === id
+  );
 
   const [addItem, setAddItem] = useState({
-    description: selected[0].description,
-    category: selected[0].category,
-    value: selected[0].value,
+    id: selected[0]?._id,
+    description: selected[0]?.description,
+    category: selected[0]?.category,
+    value: selected[0]?.value,
   });
 
   const onChange = (e) => {
@@ -56,17 +58,25 @@ const EditTransaction = ({ id, dispatch, transactions, closeEdit }) => {
     "Other",
   ];
 
-  const incomeOptions = incomeCategories.map((category) => (
-    <option value={category} key={category}>
-      {category}
-    </option>
-  ));
+  const incomeOptions = incomeCategories.map((category) =>
+    category !== selected[0].category ? (
+      <option value={category} key={category}>
+        {category}
+      </option>
+    ) : (
+      false
+    )
+  );
 
-  const expenseOptions = expenseCategories.map((category) => (
-    <option name="category" value={category} key={category}>
-      {category}
-    </option>
-  ));
+  const expenseOptions = expenseCategories.map((category) =>
+    category !== selected[0].category ? (
+      <option name="category" value={category} key={category}>
+        {category}
+      </option>
+    ) : (
+      false
+    )
+  );
 
   const handleCategoryChange = (e) => {
     setAddItem({
@@ -75,9 +85,13 @@ const EditTransaction = ({ id, dispatch, transactions, closeEdit }) => {
     });
   };
 
-  const handleSubmit = () =>{
-
-  }
+  const handleSubmit = () => {
+    dispatch({
+      type: `EDIT_${selected[0]?.type.toUpperCase()}`,
+      payload: addItem,
+    });
+    closeEdit();
+  };
 
   return (
     <div>
@@ -100,14 +114,21 @@ const EditTransaction = ({ id, dispatch, transactions, closeEdit }) => {
       <br />
 
       <label>Category: </label>
-      {selected.type === "income" ? (
-        <select onChange={handleCategoryChange}>{incomeOptions}</select>
+      {selected[0].type === "income" ? (
+        <select onChange={handleCategoryChange}>
+          <option name="category" value={selected[0].category}>
+            {selected[0].category}
+          </option>
+          {incomeOptions}
+        </select>
       ) : (
-        <select onChange={handleCategoryChange}>{expenseOptions}</select>
+        <select onChange={handleCategoryChange}>
+          <option name="category" value={selected[0].category}>
+            {selected[0].category}
+          </option>
+          {expenseOptions}
+        </select>
       )}
-
-
-
 
       <br></br>
       <button onClick={handleSubmit}>Submit</button>
