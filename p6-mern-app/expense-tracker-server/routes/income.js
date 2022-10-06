@@ -15,7 +15,7 @@ router.get("/:id", (request, response) => {
   Income.findById({ _id: request.params.id }).then((data) => {
     data===null?(response.status(404), response.send({message: `income with id: ${request.params.id} does not exist!`})) : 
     response.send(data)
-    console.log(data)
+   
   });
 });
 
