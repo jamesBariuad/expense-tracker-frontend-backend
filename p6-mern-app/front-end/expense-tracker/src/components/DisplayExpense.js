@@ -1,58 +1,47 @@
 import React from "react";
 import ExpenseChart from "./ExpenseChart";
-import { useState } from "react";
+
 
 const DisplayExpense = ({ expense }) => {
   const sortedHiToLow = expense.sort((a, b) => b.value - a.value);
 
-  // const [expenseData, setExpenseData] = useState({
-  //   labels: sortedHiToLow.map((expense) => expense.category),
-  //   datasets: [
-  //     {
-  //       label: "expense chart",
-  //       data: sortedHiToLow.map((expense) => expense.value),
-  //       backgroundColor: [
-  //         "#fbb34c",
-  //         "#fcc46c",
-  //         "#063852",
-  //         "#984756",
-  //         "#c4bc8c",
-  //         " #4b2c44",
-  //       ],
-  //     },
-  //   ],
-  // });
-let sum=[];
-const addSum=(cat)=>{let itemSum=0;
-  sortedHiToLow.map(item=> {if(item.category===cat){
-    
-    itemSum+=item.value
-    return itemSum
-  }sum.push(itemSum+cat)})
-}
-  const uniqueCategories = [...new Set(sortedHiToLow.map(income=>(income.category)))]
-  // uniqueCategories.map(category1=>sortedHiToLow.map(category2=> console.log(category2)))
-  uniqueCategories.forEach(addSum)
-  console.log(sum)
-  
-  console.log(uniqueCategories)
-  const expenseData= {
-      labels: sortedHiToLow.map((expense) => expense.category),
-      datasets: [
-        {
-          label: "expense chart",
-          data: sortedHiToLow.map((expense) => expense.value),
-          backgroundColor: [
-            "#fbb34c",
-            "#fcc46c",
-            "#063852",
-            "#984756",
-            "#c4bc8c",
-            " #4b2c44",
-          ],
-        },
-      ],
-    }
+  let totalPerCategory = [];
+  const addSum = (cat) => {
+    let sum = 0;
+    sortedHiToLow.map((item) => {
+      //checks if the category of the array is same as the element in the uniquecategory
+      if (item.category === cat) {
+        sum += item.value;
+      }
+      return sum;
+    });
+    totalPerCategory.push(sum);
+  };
+
+  const uniqueCategories = [
+    ...new Set(sortedHiToLow.map((income) => income.category)),
+  ];
+
+  uniqueCategories.forEach(addSum);
+
+
+  const expenseData = {
+    labels: uniqueCategories.map((category) => category),
+    datasets: [
+      {
+        label: "expense chart",
+        data: totalPerCategory.map((sum) => sum),
+        backgroundColor: [
+          "#fbb34c",
+          "#fcc46c",
+          "#063852",
+          "#984756",
+          "#c4bc8c",
+          " #4b2c44",
+        ],
+      },
+    ],
+  };
 
   const display = expense?.map((expense) => {
     return (
