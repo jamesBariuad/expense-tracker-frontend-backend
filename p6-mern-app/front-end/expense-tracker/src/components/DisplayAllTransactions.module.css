@@ -1,0 +1,69 @@
+.transactions {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: 20% 60% 20%;
+  grid-template-rows: 40% 60%;
+}
+
+.calccontainer {
+  grid-area: 1/2/2/3;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.calculations {
+  padding: 2%;
+  width: 50%;
+  height: auto;
+  display: flex;
+  background-color: aquamarine;
+  flex-direction: column;
+  justify-content: space-evenly;
+  box-shadow: 1px 1px 2px 0px;
+  border-radius: 10px;
+  font-size: 110%;
+}
+
+.toppart b {
+  padding: 1%;
+  width: 100%;
+  margin: 1%;
+}
+
+.display {
+  grid-area: 2/2/3/3;
+  padding: 1%;
+  text-align: center;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.display::-webkit-scrollbar {
+  display: none;
+}
+
+.displayitem {
+  padding: 1%;
+  margin: 1%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: blueviolet;
+  border-radius: 20px;
+  box-shadow: 1px 1px 1px 1px;
+  font-size: 1.45em;
+}
+
+.displayitem button{
+  padding: 0.5%;
+  margin: 0.5%;
+  font-size: 80%;
+
+}
+

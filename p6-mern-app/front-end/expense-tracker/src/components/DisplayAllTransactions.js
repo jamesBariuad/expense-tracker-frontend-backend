@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import DeleteTransaction from "./DeleteTransaction";
 import EditTransaction from "./EditTransaction";
+import styles from "./DisplayAllTransactions.module.css";
 
 const DisplayAllTransactions = ({ income, expense, dispatch }) => {
   const addTypeToIncome = income?.map((incomeObject) => ({
@@ -53,7 +54,7 @@ const DisplayAllTransactions = ({ income, expense, dispatch }) => {
 
   const display = sortedNewestFirst?.map((item) => {
     return (
-      <div key={item._id}>
+      <div key={item._id} className={styles.displayitem}>
         {item.type}
         <br></br>
         description: {item.description}
@@ -74,9 +75,42 @@ const DisplayAllTransactions = ({ income, expense, dispatch }) => {
     );
   });
 
+  const totalIncome = () => {
+    let sum = 0;
+    income.map((income) => (sum += income.value));
+    return sum;
+  };
+
+  const totalExpense = () => {
+    let sum = 0;
+    expense.map((expense) => (sum += expense.value));
+    return sum;
+  };
+
   return (
-    <>
-      <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+    <div className={styles.transactions}>
+      <div className={styles.calccontainer}>
+        <div className={styles.calculations}>
+          <div className={styles.toppart}>
+            <h3>All Transactions</h3>
+            <hr></hr>
+          </div>
+          <br></br>
+          <div className={styles.lowpart}>
+            <b>income {`: +${totalIncome()}`}</b> <br></br>
+            <br />
+            <b>expense {`: -${totalExpense()}`}</b>
+            <br></br>
+            ----------------------
+            <br />
+            <h4>
+              <i>total: {totalIncome() - totalExpense()}</i>
+            </h4>
+          </div>
+        </div>
+      </div>
+      <div className={styles.display}>
+        <div className={styles.toppart}><b>Transaction History</b></div>
         {display}
       </div>
       <div>
@@ -105,7 +139,7 @@ const DisplayAllTransactions = ({ income, expense, dispatch }) => {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

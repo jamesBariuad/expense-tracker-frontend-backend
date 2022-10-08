@@ -5,6 +5,7 @@ import DisplayIncome from "./components/DisplayIncome";
 import AddTransaction from "./components/AddTransaction";
 import DisplayExpense from "./components/DisplayExpense";
 import DisplayAllTransactions from "./components/DisplayAllTransactions";
+import "./App.css";
 
 function App() {
   const initialState = {
@@ -159,17 +160,29 @@ function App() {
   //coll
 
   return (
-    <div>
-      <DisplayIncome income={state?.income} />
+    <div className="grid-container">
+      {/* <DisplayIncome income={state?.income} />
       <AddTransaction dispatch={dispatch} />
       <br></br>
       <DisplayExpense expense={state?.expense} />
       <br></br>
-      <DisplayAllTransactions
-        income={state?.income}
-        expense={state?.expense}
-        dispatch={dispatch}
-      />
+      */}
+      <div className="topbar"><h2>Kalupì</h2></div>
+      <div className="addtransaction">
+        <button>Add a Transaction</button>
+      </div>
+      <nav className="navbar">
+        <button>Transactions</button>
+        <button>Stats</button>
+        <button>Budget</button>
+      </nav>
+      <div className="displayarea">
+        <DisplayAllTransactions
+          income={state?.income}
+          expense={state?.expense}
+          dispatch={dispatch}
+        />
+      </div>
     </div>
   );
 }

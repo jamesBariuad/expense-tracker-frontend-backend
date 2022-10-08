@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styles from "./modal.module.css"
 
 const EditTransaction = ({ id, dispatch, transactions, closeEdit }) => {
   // console.log(transactions)
@@ -94,7 +95,7 @@ const EditTransaction = ({ id, dispatch, transactions, closeEdit }) => {
   };
 
   return (
-    <div>
+    <div className={styles.modal}>
       <label>Description:</label>
       <input
         type="text"
