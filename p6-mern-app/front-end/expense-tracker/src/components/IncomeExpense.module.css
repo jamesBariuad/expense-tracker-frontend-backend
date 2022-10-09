@@ -1,0 +1,24 @@
+.container {
+  display: grid;
+  grid-template-rows: 50% 50%;
+}
+
+.chart {
+  grid-area: 1/1/2/2;
+}
+
+.transactionItems {
+ 
+  margin: 3%;
+  border: 2px solid black;
+  
+}
+
+.data {
+  grid-area: 2/1/3/2;
+  overflow: auto;
+}
+
+.data::-webkit-scrollbar {
+  display: none;
+}

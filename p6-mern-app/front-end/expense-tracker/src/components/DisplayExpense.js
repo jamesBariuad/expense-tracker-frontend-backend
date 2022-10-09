@@ -1,10 +1,10 @@
 import React from "react";
 import ExpenseChart from "./ExpenseChart";
-
+import styles from "./IncomeExpense.module.css";
 
 const DisplayExpense = ({ expense }) => {
   const sortedHiToLow = expense.sort((a, b) => b.value - a.value);
-
+  
   let totalPerCategory = [];
   const addSum = (cat) => {
     let sum = 0;
@@ -24,7 +24,6 @@ const DisplayExpense = ({ expense }) => {
 
   uniqueCategories.forEach(addSum);
 
-
   const expenseData = {
     labels: uniqueCategories.map((category) => category),
     datasets: [
@@ -42,27 +41,28 @@ const DisplayExpense = ({ expense }) => {
       },
     ],
   };
+  
 
-  const display = expense?.map((expense) => {
-    return (
-      <div key={expense._id}>
-        description: {expense.description}
-        <br></br>
-        category: {expense.category}
-        <br></br>
-        Php {expense.value}
-        <br></br>
-        {new Date(expense?.date).toDateString()}
-      </div>
-    );
-  });
+  const display = expense?.map((expense) => (
+    <div key={expense._id} className={styles.transactionItems}>
+      description: {expense.description}
+      <br></br>
+      category: {expense.category}
+      <br></br>
+      Php {expense.value}
+      <br></br>
+      {new Date(expense?.date).toDateString()}
+    </div>
+  ));
+
+
 
   return (
-    <div>
+    <div className={styles.container}>
       <div style={{ width: 300 }}>
         <ExpenseChart expense={expenseData} />
       </div>
-      {display}
+      <div className={styles.data}>{display}</div>
     </div>
   );
 };

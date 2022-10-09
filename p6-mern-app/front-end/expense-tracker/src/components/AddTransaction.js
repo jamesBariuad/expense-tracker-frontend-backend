@@ -1,7 +1,8 @@
 import React from "react";
 import { useState } from "react";
+import styles from "./modal.module.css";
 
-const AddTransaction = ({ dispatch }) => {
+const AddTransaction = ({ dispatch, toggleAdd }) => {
   const [addItem, setAddItem] = useState({
     type: "expense",
     description: "",
@@ -62,7 +63,6 @@ const AddTransaction = ({ dispatch }) => {
     "Other",
   ];
 
-
   const incomeOptions = incomeCategories.map((category) => (
     <option value={category} key={category}>
       {category}
@@ -80,9 +80,7 @@ const AddTransaction = ({ dispatch }) => {
       ...addItem,
       type: e.target.value,
     });
-    
   };
- 
 
   let displayByType = expenseOptions;
   if (addItem.type === "expense") {
@@ -98,6 +96,7 @@ const AddTransaction = ({ dispatch }) => {
     });
   };
   const handleSubmit = () => {
+    toggleAdd();
     dispatch({
       type: `ADD_TRANSACTION_${addItem.type.toUpperCase()}`,
       payload: addItem,
@@ -105,39 +104,47 @@ const AddTransaction = ({ dispatch }) => {
   };
 
   return (
-    <div>
-      <div>
+    <div className={styles.modal}>
+      <div className={styles.modalcontent}>
         <h2>Add Item</h2>
 
-        <label>Type: </label>
-        <select onChange={handletypeChange}>
-          <option value="expense">expense</option>
-          <option value="income">income</option>
-        </select>
-        <br></br>
+        <div>
+          <label>Type: </label>
+          <select onChange={handletypeChange}>
+            <option value="expense">expense</option>
+            <option value="income">income</option>
+          </select>
+        </div>
 
-        <label>Description:</label>
-        <input
-          type="text"
-          value={addItem.description}
-          name="description"
-          onChange={onChange}
-        ></input>
-        <br></br>
+        <div>
+          <label>Description: </label>
+          <input
+            type="text"
+            value={addItem.description}
+            name="description"
+            onChange={onChange}
+          ></input>
+        </div>
 
-        <label>Value:</label>
-        <input
-          type="number"
-          value={addItem.value}
-          name="value"
-          onChange={onChange}
-        ></input>
-        <br />
+        <div>
+          <label>Value: </label>
+          <input
+            type="number"
+            value={addItem.value}
+            name="value"
+            onChange={onChange}
+          ></input>
+        </div>
 
-        <label>Category: </label>
-        <select onChange={handleCategoryChange}>{displayByType}</select>
-        <br></br>
-        <button onClick={handleSubmit}>Submit</button>
+        <div>
+          <label>Category: </label>
+          <select onChange={handleCategoryChange}>{displayByType}</select>
+        </div>
+
+        <div className={styles.modalbutton}>
+          <button onClick={handleSubmit}>Submit </button>
+          <button onClick={() => toggleAdd()}>Cancel</button>
+        </div>
       </div>
     </div>
   );

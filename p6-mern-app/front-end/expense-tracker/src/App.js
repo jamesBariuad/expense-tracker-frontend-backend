@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import axios from "axios";
 // import DisplayAccounts from "./components/DisplayAccounts";
 import DisplayIncome from "./components/DisplayIncome";
@@ -6,6 +6,7 @@ import AddTransaction from "./components/AddTransaction";
 import DisplayExpense from "./components/DisplayExpense";
 import DisplayAllTransactions from "./components/DisplayAllTransactions";
 import "./App.css";
+import Stats from "./components/Stats";
 
 function App() {
   const initialState = {
@@ -149,15 +150,16 @@ function App() {
     });
   }, []);
 
-  // console.log(state)
-  // const displayIncome = state.income.map((income) => (
-  //   <DisplayIncome key={income._id} income={income} />
-  // ));
+  const [addTransaction, setAddTransaction] = useState(false);
+  const toggleAdd = () => {
+    setAddTransaction(!addTransaction);
+  };
 
-  // const date =new Date().toISOString()
-  // console.log( new Date(date).toUTCString())
+  const handleNavClick = (e) => {
+    setCurrentTab(e.target.value);
+  };
 
-  //coll
+  const [currentTab, setCurrentTab] = useState("transactions");
 
   return (
     <div className="grid-container">
@@ -167,21 +169,40 @@ function App() {
       <DisplayExpense expense={state?.expense} />
       <br></br>
       */}
-      <div className="topbar"><h2>Kalupì</h2></div>
-      <div className="addtransaction">
-        <button>Add a Transaction</button>
+      <div className="topbar">
+        <h2>Kalupì</h2>
       </div>
+      <div className="addtransaction">
+        <button onClick={toggleAdd}>Add a Transaction</button>
+      </div>
+      {addTransaction ? (
+        <AddTransaction dispatch={dispatch} toggleAdd={toggleAdd} />
+      ) : (
+        false
+      )}
       <nav className="navbar">
-        <button>Transactions</button>
-        <button>Stats</button>
-        <button>Budget</button>
+        <button value="transactions" onClick={handleNavClick}>
+          Transactions
+        </button>
+        <button value="stats" onClick={handleNavClick}>
+          {" "}
+          Stats
+        </button>
+        <button value="budget" onClick={handleNavClick}>
+          Budget
+        </button>
       </nav>
       <div className="displayarea">
-        <DisplayAllTransactions
-          income={state?.income}
-          expense={state?.expense}
-          dispatch={dispatch}
-        />
+        {currentTab === "transactions" ? (
+          <DisplayAllTransactions
+            income={state?.income}
+            expense={state?.expense}
+            dispatch={dispatch}
+          />
+        ) : (
+          false
+        )}
+        {currentTab ==="stats" && <Stats income={state.income} expense={state.expense}/>}
       </div>
     </div>
   );

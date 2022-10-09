@@ -1,9 +1,9 @@
 import React from "react";
 import IncomeChart from "./IncomeChart";
-
+import styles from "./IncomeExpense.module.css";
 
 const DisplayIncome = ({ income }) => {
-  const sortedHiToLow = income?.sort((a, b) => b.value - a.value);
+  const sortedHiToLow = income.sort((a, b) => b.value - a.value);
 
   let totalPerCategory = [];
   const addSum = (cat) => {
@@ -19,18 +19,17 @@ const DisplayIncome = ({ income }) => {
   };
 
   const uniqueCategories = [
-    ...new Set(sortedHiToLow.map((income) => income.category)),
+    ...new Set(sortedHiToLow?.map((income) => income.category)),
   ];
 
   uniqueCategories.forEach(addSum);
 
-
   const incomeData = {
-    labels: sortedHiToLow.map((income) => income.category),
+    labels: uniqueCategories.map((category) => category),
     datasets: [
       {
         label: "income chart",
-        data: sortedHiToLow.map((income) => income.value),
+        data: totalPerCategory.map((sum) => sum),
         backgroundColor: [
           "#fbb34c",
           "#fcc46c",
@@ -43,9 +42,8 @@ const DisplayIncome = ({ income }) => {
     ],
   };
 
-
   const display = income?.map((income) => (
-    <div key={income?._id}>
+    <div key={income?._id} className={styles.transactionItems}>
       description: {income.description}
       <br></br>
       category: {income.category}
@@ -57,12 +55,12 @@ const DisplayIncome = ({ income }) => {
   ));
 
   return (
-    <>
-      <div style={{ width: 300, backgroundColor: "black" }}>
+    <div className={styles.container}>
+      <div className={styles.chart} >
         <IncomeChart income={incomeData} />
       </div>
-      <div>{display}</div>
-    </>
+      <div className={styles.data}>{display}</div>
+    </div>
   );
 };
 

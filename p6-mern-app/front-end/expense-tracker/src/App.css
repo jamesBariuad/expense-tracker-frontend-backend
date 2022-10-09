@@ -6,7 +6,6 @@
 
 .grid-container {
   display: grid;
-  width: 100vw;
   height: 100vh;
   grid-template-columns: 15% 70% 15%;
   grid-template-rows: 10% 90%;
@@ -41,6 +40,7 @@
   border-radius: 20px;
   font-size: 1em;
   background-color: yellow;
+ 
 }
 
 .displayarea {
@@ -50,6 +50,8 @@
   justify-content: center;
   align-items: center;
   background-color: blanchedalmond;
+  height: 100%;
+  width: 100%;
 }
 
 .addtransaction {

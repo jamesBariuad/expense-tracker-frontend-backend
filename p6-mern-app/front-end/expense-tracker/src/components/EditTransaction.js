@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./modal.module.css"
+import styles from "./modal.module.css";
 
 const EditTransaction = ({ id, dispatch, transactions, closeEdit }) => {
   // console.log(transactions)
@@ -96,44 +96,52 @@ const EditTransaction = ({ id, dispatch, transactions, closeEdit }) => {
 
   return (
     <div className={styles.modal}>
-      <label>Description:</label>
-      <input
-        type="text"
-        value={addItem.description}
-        name="description"
-        onChange={onChange}
-      ></input>
-      <br></br>
+      <div className={styles.modalcontent}>
+        <h2>Edit Transaction</h2>
+        <div>
+          <label>Description: </label>
+          <input
+            type="text"
+            value={addItem.description}
+            name="description"
+            onChange={onChange}
+          ></input>
+        </div>
 
-      <label>Value:</label>
-      <input
-        type="number"
-        value={addItem.value}
-        name="value"
-        onChange={onChange}
-      ></input>
-      <br />
+        <div>
+          <label>Value: </label>
+          <input
+            type="number"
+            value={addItem.value}
+            name="value"
+            onChange={onChange}
+          ></input>
+        </div>
 
-      <label>Category: </label>
-      {selected[0].type === "income" ? (
-        <select onChange={handleCategoryChange}>
-          <option name="category" value={selected[0].category}>
-            {selected[0].category}
-          </option>
-          {incomeOptions}
-        </select>
-      ) : (
-        <select onChange={handleCategoryChange}>
-          <option name="category" value={selected[0].category}>
-            {selected[0].category}
-          </option>
-          {expenseOptions}
-        </select>
-      )}
+        <div>
+          <label>Category: </label>
+          {selected[0].type === "income" ? (
+            <select onChange={handleCategoryChange}>
+              <option name="category" value={selected[0].category}>
+                {selected[0].category}
+              </option>
+              {incomeOptions}
+            </select>
+          ) : (
+            <select onChange={handleCategoryChange}>
+              <option name="category" value={selected[0].category}>
+                {selected[0].category}
+              </option>
+              {expenseOptions}
+            </select>
+          )}
+        </div>
 
-      <br></br>
-      <button onClick={handleSubmit}>Submit</button>
-      <button onClick={closeEdit}>cancel</button>
+        <div className={styles.modalbutton}>
+          <button onClick={handleSubmit}>Submit </button>
+          <button onClick={closeEdit}> cancel</button>
+        </div>
+      </div>
     </div>
   );
 };

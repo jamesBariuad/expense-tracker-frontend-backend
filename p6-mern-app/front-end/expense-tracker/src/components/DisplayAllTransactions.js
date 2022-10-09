@@ -65,12 +65,14 @@ const DisplayAllTransactions = ({ income, expense, dispatch }) => {
         <br></br>
         {new Date(item?.date).toDateString()}
         <br></br>
-        <button onClick={handleEdit} id={item._id}>
-          edit
-        </button>
-        <button onClick={handleDelete} id={item._id}>
-          delete
-        </button>
+        <div>
+          <button onClick={handleEdit} id={item._id}>
+            edit
+          </button>
+          <button onClick={handleDelete} id={item._id}>
+            delete
+          </button>
+        </div>
       </div>
     );
   });
@@ -110,8 +112,9 @@ const DisplayAllTransactions = ({ income, expense, dispatch }) => {
         </div>
       </div>
       <div className={styles.display}>
-        <div className={styles.toppart}><b>Transaction History</b></div>
-        {display}
+        <h3 className={styles.head}>Transaction History</h3>
+
+        <div className={styles.data}>{display}</div>
       </div>
       <div>
         <div>
