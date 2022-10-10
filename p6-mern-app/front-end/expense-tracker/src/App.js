@@ -7,6 +7,7 @@ import DisplayExpense from "./components/DisplayExpense";
 import DisplayAllTransactions from "./components/DisplayAllTransactions";
 import "./App.css";
 import Stats from "./components/Stats";
+import Budgets from "./components/Budgets";
 
 function App() {
   const initialState = {
@@ -203,6 +204,7 @@ function App() {
           false
         )}
         {currentTab ==="stats" && <Stats income={state.income} expense={state.expense}/>}
+        {currentTab ==="budget" && <Budgets expense={state.expense} budgets={state.budgets}/>}
       </div>
     </div>
   );

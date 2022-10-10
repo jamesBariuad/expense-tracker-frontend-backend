@@ -1,3 +1,4 @@
+const { response } = require("express");
 const express = require("express");
 const router = express.Router();
 
@@ -18,7 +19,21 @@ router.get("/:id", (request, response) => {
   });
 });
 
-//add an expense
+//get all expense data on a given date
+router.get("/date/datenow", (request,response)=>{
+  const month = new Date().getMonth()
+  const year = new Date().getFullYear()
+
+  const monthStart = `${year}-${month+1}-01`
+  const monthEnd = `${year}-${month+1}-31`
+  Expense.find({$and: [{date:{$gte: monthStart}}, {date:{$lte: monthEnd}}]}).then(data=>{
+    response.send(data)
+  })
+
+
+})
+
+//add an expense`
 router.post("/", (request, response) => {
   const newExpense = new Expense(request.body);
   newExpense.save().then((data) => {
