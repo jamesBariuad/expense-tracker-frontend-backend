@@ -22,27 +22,35 @@ const Budgets = ({ expense, budgets }) => {
     return setTotalExpense(sum);
   };
 
-  const getPercentage = () =>{
-    const percent = ((totalExpense)/budgetData[0]?.amount)*100
-    return percent
-  }
+  const getPercentage = () => {
+    const percent = (totalExpense / budgetData[0]?.amount) * 100;
+    return percent;
+  };
 
-  console.log(budgetData[0]?.amount);
+
 
   // console.log(All)
 
   const display = () => (
     <div className={styles.budgetstats}>
       <div className={styles.category}>
+        <p>Monthly</p>
         <p>Category: All</p>
         <p>Total budget: {budgetData[0]?.amount}</p>
       </div>
 
       <div className={styles.percentage}>
-        <div className={styles.progress} style={{width:`"${getPercentage()}"`}}>{getPercentage()}</div>
+        {/* <div className={styles.progress}>{getPercentage()}%</div> */}
+        {getPercentage()>=100?<><progress value={getPercentage()} max="100" className={styles.progressred}>{getPercentage()}</progress>100%</> :
+       <> <progress value={getPercentage()} max="100" className={styles.progress}>{getPercentage()}</progress>{getPercentage().toFixed(2)}%  </>
+         }
+        
+       
       </div>
       <div className={styles.currspend}>current spend: {totalExpense}</div>
-      <div className={styles.remspend}>remaining spend: {budgetData[0]?.amount-totalExpense}</div>
+      <div className={styles.remspend}>
+        remaining spend: {budgetData[0]?.amount - totalExpense}
+      </div>
     </div>
   );
 

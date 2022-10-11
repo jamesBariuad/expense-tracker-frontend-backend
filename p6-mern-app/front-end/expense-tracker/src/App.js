@@ -47,13 +47,33 @@ function App() {
       case "ADD_TRANSACTION_INCOME":
         axios
           .post("http://localhost:8080/api/v1/income", action.payload)
-          .then((response) => {});
+          .then((response) =>
+            axios
+              .get("http://localhost:8080/api/v1/income")
+              .then((response) => {
+                dispatch({
+                  type: "LOAD_ALL_INCOME",
+                  payload: response.data,
+                });
+              })
+          );
+
         return { ...state, income: [...state.income, action.payload] };
 
       case "ADD_TRANSACTION_EXPENSE":
         axios
           .post("http://localhost:8080/api/v1/expense", action.payload)
-          .then((response) => {});
+          .then((response) =>
+            axios
+              .get("http://localhost:8080/api/v1/expense")
+              .then((response) => {
+                dispatch({
+                  type: "LOAD_ALL_EXPENSE",
+                  payload: response.data,
+                });
+              })
+          );
+
         return { ...state, expense: [...state.expense, action.payload] };
 
       case "DELETE_INCOME":
@@ -162,6 +182,8 @@ function App() {
 
   const [currentTab, setCurrentTab] = useState("transactions");
 
+  console.log(state);
+
   return (
     <div className="grid-container">
       {/* <DisplayIncome income={state?.income} />
@@ -186,7 +208,6 @@ function App() {
           Transactions
         </button>
         <button value="stats" onClick={handleNavClick}>
-          {" "}
           Stats
         </button>
         <button value="budget" onClick={handleNavClick}>
@@ -203,8 +224,12 @@ function App() {
         ) : (
           false
         )}
-        {currentTab ==="stats" && <Stats income={state.income} expense={state.expense}/>}
-        {currentTab ==="budget" && <Budgets expense={state.expense} budgets={state.budgets}/>}
+        {currentTab === "stats" && (
+          <Stats income={state.income} expense={state.expense} />
+        )}
+        {currentTab === "budget" && (
+          <Budgets expense={state.expense} budgets={state.budgets} />
+        )}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DeleteTransaction from "./DeleteTransaction";
 import EditTransaction from "./EditTransaction";
 import styles from "./DisplayAllTransactions.module.css";
@@ -15,7 +15,7 @@ const DisplayAllTransactions = ({ income, expense, dispatch }) => {
   const allTransactions = addTypeToIncome?.concat(addTypeToExpense);
 
   const sortedNewestFirst = allTransactions?.sort(
-    (a, b) => -a.date.localeCompare(b.date)
+    (a, b) => -a.date?.localeCompare(b.date)
   );
 
   const [toggleEdit, setToggleEdit] = useState(false);
@@ -54,22 +54,22 @@ const DisplayAllTransactions = ({ income, expense, dispatch }) => {
 
   const display = sortedNewestFirst?.map((item) => {
     return (
-      <div key={item._id} className={styles.displayitem}>
-        {item.type}
+      <div key={item?._id} className={styles.displayitem}>
+        {item?.type}
         <br></br>
-        description: {item.description}
+        description: {item?.description}
         <br></br>
-        category: {item.category}
+        category: {item?.category}
         <br></br>
-        Php {item.value}
+        Php {item?.value}
         <br></br>
         {new Date(item?.date).toDateString()}
         <br></br>
         <div>
-          <button onClick={handleEdit} id={item._id}>
+          <button onClick={handleEdit} id={item?._id}>
             edit
           </button>
-          <button onClick={handleDelete} id={item._id}>
+          <button onClick={handleDelete} id={item?._id}>
             delete
           </button>
         </div>
@@ -78,15 +78,17 @@ const DisplayAllTransactions = ({ income, expense, dispatch }) => {
   });
 
   const totalIncome = () => {
-    let sum = 0;
-    income.map((income) => (sum += income.value));
-    return sum;
+    let sumIncome = 0;
+    income?.map((income) => (sumIncome += income.value));
+    return sumIncome;
   };
 
   const totalExpense = () => {
-    let sum = 0;
-    expense.map((expense) => (sum += expense.value));
-    return sum;
+    let sumExpense = 0;
+    let arr = [];
+    expense?.map((expense) => arr.push(expense.value));
+    sumExpense = arr.reduce((prev, curr) => prev + curr, 0);
+    return sumExpense;
   };
 
   return (
@@ -108,6 +110,15 @@ const DisplayAllTransactions = ({ income, expense, dispatch }) => {
             <h4>
               <i>total: {totalIncome() - totalExpense()}</i>
             </h4>
+            {/* <b>income {`: +${totalIncome()}`}</b> <br></br>
+            <br />
+            <b>expense {`: -${totalExpense()}`}</b>
+            <br></br>
+            ----------------------
+            <br />
+            <h4>
+              <i>total: {totalIncome() - totalExpense()}</i>
+            </h4> */}
           </div>
         </div>
       </div>

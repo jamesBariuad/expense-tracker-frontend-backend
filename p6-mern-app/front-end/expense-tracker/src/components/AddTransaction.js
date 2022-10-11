@@ -37,7 +37,7 @@ const AddTransaction = ({ dispatch, toggleAdd }) => {
       case "value":
         setAddItem({
           ...addItem,
-          value: e.target.value,
+          value: Number(e.target.value),
         });
         break;
       case "date":
@@ -106,7 +106,7 @@ const AddTransaction = ({ dispatch, toggleAdd }) => {
   return (
     <div className={styles.modal}>
       <div className={styles.modalcontent}>
-        <h2>Add Item</h2>
+        <h2>Add Transaction</h2>
 
         <div>
           <label>Type: </label>
