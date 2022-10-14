@@ -33,7 +33,7 @@ const EditTransaction = ({ id, dispatch, transactions, closeEdit }) => {
       case "value":
         setAddItem({
           ...addItem,
-          value: e.target.value,
+          value: Number(e.target.value),
         });
         break;
       case "date":

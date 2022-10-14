@@ -6,10 +6,8 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-
 app.use(cors());
 app.use(bodyParser.json());
-
 
 app.listen(port, () => {
   console.log(`express server running on port ${port}`);
@@ -26,5 +24,5 @@ const incomeRouter = require("./routes/income");
 
 app.use("/api/v1/accounts", accountsRouter);
 app.use("/api/v1/budgets", budgetsRouter);
-app.use("/api/v1/expense",expenseRouter);
-app.use("/api/v1/income",incomeRouter);
+app.use("/api/v1/expense", expenseRouter);
+app.use("/api/v1/income", incomeRouter);

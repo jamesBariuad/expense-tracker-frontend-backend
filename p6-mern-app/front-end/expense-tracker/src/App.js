@@ -136,6 +136,7 @@ function App() {
           }),
         };
 
+
       default: {
         return alert("sumting wong");
       }
@@ -182,7 +183,7 @@ function App() {
 
   const [currentTab, setCurrentTab] = useState("transactions");
 
-  console.log(state);
+  
 
   return (
     <div className="grid-container">
