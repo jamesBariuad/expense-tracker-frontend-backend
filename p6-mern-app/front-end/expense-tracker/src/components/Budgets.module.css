@@ -4,6 +4,7 @@
   display: grid;
   grid-template-rows: 10% 90%;
   border: 1px solid black;
+ 
 }
 
 .head {
@@ -34,12 +35,12 @@
 
 .budgetstats {
   width: 90%;
- 
+  
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   gap: 5px;
-  border: 2px solid black;
+
   padding: 5px;
 }
 
@@ -86,13 +87,36 @@
 
 .data {
   display: flex;
-  justify-content: center;
+ 
   align-items: center;
+  flex-direction: column;
+  overflow: auto;
 }
+
+/* .data::-webkit-scrollbar {
+  display: none;
+} */
+
 progress::-webkit-progress-bar {
   border-radius: 1 0px;
 }
 
 progress::-webkit-progress-value {
   background-color: green;
+}
+
+img {
+  grid-area: 1/4/2/5;
+  width: 1.5em;
+  margin-left: auto;
+  margin-top: 0.5em;
+}
+
+.deleteButton{
+  grid-area: 1/4/2/5;
+  width: 1.5em;
+  margin-left: auto;
+  margin-top: 0.5em;
+  border: none;
+  background: none;
 }

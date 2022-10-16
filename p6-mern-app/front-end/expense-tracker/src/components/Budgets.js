@@ -3,11 +3,12 @@ import React, { useEffect } from "react";
 import styles from "./Budgets.module.css";
 import { useState } from "react";
 import AddBudget from "./AddBudget";
+import DeleteBudget from "./DeleteBudget";
 
-const Budgets = ({ expense, budgets }) => {
+const Budgets = ({ reloadBudgetsdddddddddd }) => {
   const [budgetData, setBudgetData] = useState([]);
-  const [monthlyExpense, setMonthlyExpense] = useState(0);
-  const [toggleAddBudget, setToggleAddBudget] = useState(false)
+  const [monthlyExpense, setMonthlyExpense] = useState([]);
+  const [toggleAddBudget, setToggleAddBudget] = useState(false);
 
   useEffect(() => {
     axios
@@ -18,72 +19,128 @@ const Budgets = ({ expense, budgets }) => {
       .then((response) => setBudgetData(response.data));
   }, []);
 
-
-
-  // const sumMonthly = (monthlyData) => {
-  //   let sum = 0;
-  //   monthlyData.map((data) => (sum += data.value));
-  //   return setTotalExpense(sum);
-  // };
-
-  // const getPercentage = () => {
-  //   const percent = (totalExpense / budgetData[0]?.amount) * 100;
-  //   return percent;
-  // };
-
-  const toggleBudget = () =>
-  {
-      setToggleAddBudget(!toggleAddBudget)
-      axios
+  const toggleBudget = () => {
+    axios
       .get("http://localhost:8080/api/v1/budgets")
-      .then((response) => setBudgetData(response.data));
-  }
+      .then(
+        (response) => setBudgetData(response.data),
+        setToggleAddBudget(!toggleAddBudget)
+      );
+  };
 
-  const displayBudgets = budgetData.map( budget=>
-    console.log(budget)
-  )
-  console.log(monthlyExpense)
+  const getPercentage = (category, budgetOfCategory) => {
+    return ((getSumOfCategory(category) / budgetOfCategory) * 100).toFixed(2);
+  };
 
+  const getSumOfCategory = (category) => {
+    let sum = 0;
+    category === "All"
+      ? monthlyExpense.map((expense) => {
+          return sum += expense.value;
+        })
+      : monthlyExpense.map((expense) => {
+          if (expense.category === category) {
+             sum += expense.value;
+          }
+          return sum
+        });
+    return sum;
+  };
 
-  console.log(budgetData)
-  // console.log(All)
+  const [deleteBudget, setDeleteBudget] = useState(false);
+  const [clickedId, setClickedId] = useState("");
+  const toggleDelete = (e) => {
+    setDeleteBudget(!deleteBudget);
+  };
+  const handleDelete = (e) => {
+    setClickedId(e.target.name);
+    toggleDelete();
+  };
+  const deleteConfirmed = (clickedId) => {
+    axios.delete(`http://localhost:8080/api/v1/budgets/${clickedId}`).then(
+      axios
+        .get("http://localhost:8080/api/v1/budgets")
+        .then((response) => setBudgetData(response.data))
+        .then(toggleDelete())
+    );
+  };
 
-  // const display = () => (
-  //   <div className={styles.budgetstats}>
-  //     <div className={styles.category}>
-  //       <p>Monthly</p>
-  //       <p>Category: All</p>
-  //       <p>Total budget: {budgetData[0]?.amount}</p>
-  //     </div>
+  const displayBudgets = budgetData.map((budget) => (
+    <div key={budget._id} className={styles.budgetstats}>
+      <button className={styles.deleteButton}>
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/2976/2976286.png"
+          name={budget._id}
+          onClick={(e) => handleDelete(e)}
+          alt="xbutton"
+        ></img>
+      </button>
 
-  //     <div className={styles.percentage}>
-  //       {/* <div className={styles.progress}>{getPercentage()}%</div> */}
-  //       {getPercentage()>=100?<><progress value={getPercentage()} max="100" className={styles.progressred}>{getPercentage()}</progress>100%</> :
-  //      <> <progress value={getPercentage()} max="100" className={styles.progress}>{getPercentage()}</progress>{getPercentage().toFixed(2)}%  </>
-  //        }
-        
-       
-  //     </div>
-  //     <div className={styles.currspend}>current spend: {totalExpense}</div>
-  //     <div className={styles.remspend}>
-  //       remaining spend: {budgetData[0]?.amount - totalExpense}
-  //     </div>
-  //   </div>
-  // );
+      <div className={styles.category}>
+        <p>{budget.category}</p>
+        <p>Total budget: {budget.amount}</p>
+      </div>
 
+      <div className={styles.percentage}>
+        {getPercentage(budget.category, budget.amount) >= 100 ? (
+          <>
+            <progress
+              value={getPercentage(budget.category, budget.amount)}
+              max="100"
+              className={styles.progressred}
+            >
+              {getPercentage(budget.category, budget.amount)}
+            </progress>
+            100%
+          </>
+        ) : (
+          <>
+            <progress
+              value={getPercentage(budget.category, budget.amount)}
+              max="100"
+              className={styles.progress}
+            >
+              {getPercentage(budget.category, budget.amount)}
+            </progress>
+            {getPercentage(budget.category, budget.amount)}%
+          </>
+        )}
+      </div>
+
+      <div className={styles.currspend}>
+        current spend: {getSumOfCategory(budget.category)}
+      </div>
+      <div className={styles.remspend}>
+        remaining spend: {budget.amount - getSumOfCategory(budget.category)}
+      </div>
+    </div>
+  ));
 
   return (
     <div className={styles.container}>
+      {deleteBudget && (
+        <DeleteBudget
+          toggleDelete={toggleDelete}
+          handleDelete={handleDelete}
+          clickedId={clickedId}
+          deleteConfirmed={deleteConfirmed}
+        />
+      )}
+
       <div className={styles.head}>
-        <h2 className={styles.center}>Budgets</h2>
+        <h2 className={styles.center}>Budgets for this month</h2>
         <div></div>
         <div className={styles.button}>
           <button onClick={toggleBudget}>Create a budget</button>
         </div>
       </div>
-      {toggleAddBudget? <AddBudget toggleBudget={toggleBudget} setBudgetData={setBudgetData}/> : false}
-      {/* <div className={styles.data}>{display()}</div> */}
-      
+      {toggleAddBudget ? (
+        <AddBudget toggleBudget={toggleBudget} setBudgetData={setBudgetData} />
+      ) : (
+        false
+      )}
+
+      <div className={styles.data}>{displayBudgets}</div>
     </div>
   );
 };

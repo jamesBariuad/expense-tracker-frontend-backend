@@ -1,68 +1,74 @@
-import axios from 'axios';
-import React, { useState } from 'react'
+import axios from "axios";
+import React, { useState } from "react";
+import styles from "./modal.module.css";
 
-const AddBudget = ({toggleBudget, setBudgetData}) => {
+const AddBudget = ({ toggleBudget }) => {
+  const [budgetDetails, setBudgetDetails] = useState({
+    amount: 0,
+    category: "All",
+    timeFrame: "Monthly",
+  });
+  const expenseCategories = [
+    "All",
+    "Food",
+    "Social Life",
+    "Self-Development",
+    "Transportation",
+    "HouseHold",
+    "Health",
+    "Apparel",
+    "Other",
+  ];
 
-    const [budgetDetails, setBudgetDetails] = useState({
-        amount: 0,
-        category: "All",
-        timeFrame: "Monthly"
-    })
-    const expenseCategories = [
-        "All",
-        "Food",
-        "Social Life",
-        "Self-Development",
-        "Transportation",
-        "HouseHold",
-        "Health",
-        "Apparel",
-        "Other",
-      ];
-
-    const onChange =(e)=>{
-        switch (e.target.name){
-            case "inputAmount":
-                setBudgetDetails({...budgetDetails, amount: Number(e.target.value)})
-            break;
-            case "categories":
-                setBudgetDetails({...budgetDetails, category: e.target.value})
-            break;
-        }
+  const onChange = (e) => {
+    switch (e.target.name) {
+      case "inputAmount":
+        setBudgetDetails({ ...budgetDetails, amount: Number(e.target.value) });
+        break;
+      case "categories":
+        setBudgetDetails({ ...budgetDetails, category: e.target.value });
+        break;
+      default:
+        break;
     }
+  };
 
+  const handleAddButton = () => {
+    budgetDetails.amount === 0
+      ? alert("input an amount")
+      : axios
+          .post("http://localhost:8080/api/v1/budgets", budgetDetails)
+          .then(toggleBudget());
+  };
 
-    const handleAddButton = () =>{
-
-        budgetDetails.amount===0?
-        alert("input an amount")
-        :
-        
-        axios.post("http://localhost:8080/api/v1/budgets",budgetDetails).then(
-        toggleBudget()
-        )
-        
-        
-        
-    }
-
-    const categoryOptions = expenseCategories.map( category=>
-        <option key={category} value={category}>{category}</option>
-    )
+  const categoryOptions = expenseCategories.map((category) => (
+    <option key={category} value={category}>
+      {category}
+    </option>
+  ));
   return (
-    <div>
+    <div className={styles.modal}>
+      <div className={styles.modalcontent}>
         <h2>Add a monthly budget</h2>
         <label>Amount: </label>
-        <input type="number" name='inputAmount' onChange={onChange} value={AddBudget.amount}></input>
+        <input
+          type="number"
+          name="inputAmount"
+          onChange={onChange}
+          value={AddBudget.amount}
+        ></input>
         <label>Choose a category: </label>
-        <select name="categories" onChange={onChange} >{categoryOptions}</select>
+        <select name="categories" onChange={onChange}>
+          {categoryOptions}
+        </select>
 
-        <div>
-        <button onClick={handleAddButton}>Add Budget</button>
-        <button onClick={()=>toggleBudget()}>Cancel</button>
+        <div className={styles.modalbutton}>
+          <button onClick={handleAddButton}>Add Budget</button>
+          <button onClick={() => toggleBudget()}>Cancel</button>
         </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default AddBudget
+export default AddBudget;

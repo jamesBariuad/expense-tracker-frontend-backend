@@ -72,6 +72,7 @@ function App() {
                   payload: response.data,
                 });
               })
+              .then(reloadBudgets())
           );
 
         return { ...state, expense: [...state.expense, action.payload] };
@@ -136,7 +137,6 @@ function App() {
           }),
         };
 
-
       default: {
         return alert("sumting wong");
       }
@@ -183,16 +183,17 @@ function App() {
 
   const [currentTab, setCurrentTab] = useState("transactions");
 
-  
+  const reloadBudgets = () => {
+    axios.get("http://localhost:8080/api/v1/budgets").then((response) => {
+      dispatch({
+        type: "LOAD_BUDGETS",
+        payload: response.data,
+      });
+    });
+  };
 
   return (
     <div className="grid-container">
-      {/* <DisplayIncome income={state?.income} />
-      <AddTransaction dispatch={dispatch} />
-      <br></br>
-      <DisplayExpense expense={state?.expense} />
-      <br></br>
-      */}
       <div className="topbar">
         <h2>Kalupì</h2>
       </div>
@@ -229,7 +230,11 @@ function App() {
           <Stats income={state.income} expense={state.expense} />
         )}
         {currentTab === "budget" && (
-          <Budgets expense={state.expense} budgets={state.budgets} />
+          <Budgets
+            expense={state.expense}
+            budgets={state.budgets}
+            reloadBudgets={reloadBudgets}
+          />
         )}
       </div>
     </div>

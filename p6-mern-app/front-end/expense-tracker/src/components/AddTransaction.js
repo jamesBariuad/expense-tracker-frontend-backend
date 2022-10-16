@@ -96,11 +96,11 @@ const AddTransaction = ({ dispatch, toggleAdd }) => {
     });
   };
   const handleSubmit = () => {
-    toggleAdd();
     dispatch({
       type: `ADD_TRANSACTION_${addItem.type.toUpperCase()}`,
       payload: addItem,
     });
+    toggleAdd();
   };
 
   return (
