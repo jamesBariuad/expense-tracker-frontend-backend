@@ -40,10 +40,6 @@ const DisplayAllTransactions = ({ income, expense, dispatch }) => {
   };
 
   const deleteConfirmed = (transaction) => {
-    // console.log(clickedId,transaction[0].type.toUpperCase())
-    // const type =
-    // console.log(transaction[0].type.toUpperCase())
-
     dispatch({
       type: `DELETE_${transaction[0].type.toUpperCase()}`,
       payload: {
@@ -55,16 +51,14 @@ const DisplayAllTransactions = ({ income, expense, dispatch }) => {
   const display = sortedNewestFirst?.map((item) => {
     return (
       <div key={item?._id} className={styles.displayitem}>
-        {item?.type}
-        <br></br>
-        description: {item?.description}
-        <br></br>
-        category: {item?.category}
-        <br></br>
-        Php {item?.value}
-        <br></br>
+        {/* {item?.type} */}
         {new Date(item?.date).toDateString()}
-        <br></br>
+        <p>{item?.category}</p>
+        <p>{item?.description}</p>
+
+        {item?.type==="income" ?(<p className={styles.income}>₱ {item?.value}</p>): (<p className={styles.expense}>-₱ {item?.value}</p>)}
+        
+      
         <div>
           <button onClick={handleEdit} id={item?._id}>
             edit
@@ -101,24 +95,16 @@ const DisplayAllTransactions = ({ income, expense, dispatch }) => {
           </div>
           <br></br>
           <div className={styles.lowpart}>
-            <b>income {`: +${totalIncome()}`}</b> <br></br>
+            <b className={styles.income}>income {`: +${totalIncome()}`}</b> <br></br>
             <br />
-            <b>expense {`: -${totalExpense()}`}</b>
+            <b className={styles.expense}>expense {`: -${totalExpense()}`}</b>
             <br></br>
             ----------------------
             <br />
             <h4>
-              <i>total: {totalIncome() - totalExpense()}</i>
+            total: {(totalIncome() - totalExpense())>0? <i className={styles.income}>+{totalIncome() - totalExpense()}</i> : <i className={styles.expense}>{totalIncome() - totalExpense()}</i>}
+              
             </h4>
-            {/* <b>income {`: +${totalIncome()}`}</b> <br></br>
-            <br />
-            <b>expense {`: -${totalExpense()}`}</b>
-            <br></br>
-            ----------------------
-            <br />
-            <h4>
-              <i>total: {totalIncome() - totalExpense()}</i>
-            </h4> */}
           </div>
         </div>
       </div>

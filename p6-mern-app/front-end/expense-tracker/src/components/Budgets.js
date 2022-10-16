@@ -58,11 +58,12 @@ const Budgets = ({ reloadBudgetsdddddddddd }) => {
   };
   const deleteConfirmed = (clickedId) => {
     axios.delete(`http://localhost:8080/api/v1/budgets/${clickedId}`).then(
-      axios
+      
+    );
+    axios
         .get("http://localhost:8080/api/v1/budgets")
         .then((response) => setBudgetData(response.data))
         .then(toggleDelete())
-    );
   };
 
   const displayBudgets = budgetData.map((budget) => (
