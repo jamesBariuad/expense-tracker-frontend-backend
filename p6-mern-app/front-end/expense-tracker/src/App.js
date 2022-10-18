@@ -192,6 +192,8 @@ function App() {
     });
   };
 
+  // const [clicked, setClicked] = useState(true)
+
   return (
     <div className="grid-container">
       <div className="topbar">
@@ -206,15 +208,29 @@ function App() {
         false
       )}
       <nav className="navbar">
-        <button value="transactions" onClick={handleNavClick}>
-          Transactions
-        </button>
-        <button value="stats" onClick={handleNavClick}>
+        {currentTab === "transactions" ? (
+          <button
+            style={{ backgroundColor: "#B5B5B5" }}
+            value="transactions"
+            onClick={handleNavClick}
+          >
+            Transactions
+          </button>
+        ) : (
+          <button value="transactions" onClick={handleNavClick}>
+            Transactions
+          </button>
+        )}
+        {currentTab==="stats"?<button style={{ backgroundColor: "#B5B5B5" }} value="stats" onClick={handleNavClick}>
           Stats
-        </button>
-        <button value="budget" onClick={handleNavClick}>
+        </button>:<button value="stats" onClick={handleNavClick}>
+          Stats
+        </button>}
+        {currentTab==="budget"?<button style={{ backgroundColor: "#B5B5B5" }} value="budget" onClick={handleNavClick}>
           Budget
-        </button>
+        </button>:<button value="budget" onClick={handleNavClick}>
+          Budget
+        </button>}
       </nav>
       <div className="displayarea">
         {currentTab === "transactions" ? (
@@ -230,11 +246,7 @@ function App() {
           <Stats income={state.income} expense={state.expense} />
         )}
         {currentTab === "budget" && (
-          <Budgets
-            expense={state.expense}
-            budgets={state.budgets}
-            reloadBudgets={reloadBudgets}
-          />
+          <Budgets expense={state.expense} budgets={state.budgets} />
         )}
       </div>
     </div>

@@ -3,7 +3,7 @@
   width: 60%;
   display: grid;
   grid-template-rows: 10% 90%;
-  box-shadow: 0px 0px 2px 0px ;
+  box-shadow: 0px 0px 4px 0px ;
   border-radius: 10px;
 }
 
@@ -43,9 +43,10 @@
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   gap: 5px;
-  box-shadow: 0px 0px 2px 0px;
-  margin-top: 2.5em;
+  box-shadow: 0px 0px 3px 0px;
+  margin: 1.25em;
   padding: 5px;
+  border-radius: 20px;
 }
 
 .category {
@@ -93,14 +94,12 @@
   display: flex;
  
   align-items: center;
+  padding: 1.5em;
   flex-direction: column;
   overflow: auto;
   
 }
 
-/* .data::-webkit-scrollbar {
-  display: none;
-} */
 
 progress::-webkit-progress-bar {
   border-radius: 1 0px;
@@ -124,4 +123,12 @@ img {
   margin-top: 0.5em;
   border: none;
   background: none;
+}
+
+.exceed{
+  color: red;
+}
+
+.notexceed{
+  color: green
 }

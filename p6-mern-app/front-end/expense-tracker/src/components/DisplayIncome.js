@@ -42,17 +42,21 @@ const DisplayIncome = ({ income }) => {
     ],
   };
 
-  const display = income?.map((income) => (
-    <div key={income?._id} className={styles.transactionItems}>
-      description: {income.description}
-      <br></br>
-      category: {income.category}
-      <br></br>
-      Php {income.value}
-      <br></br>
-      {new Date(income?.date).toDateString()}
-    </div>
-  ));
+  // const display = income?.map((income) => (
+  //   <div key={income?._id} className={styles.transactionItems}>
+  //     description: {income.description}
+  //     <br></br>
+  //     category: {income.category}
+  //     <br></br>
+  //     Php {income.value}
+  //     <br></br>
+  //     {new Date(income?.date).toDateString()}
+  //   </div>
+  // ));
+
+  const display = uniqueCategories.map((cat,i)=>
+     <div key={cat} className={styles.transactionItems}>{cat}: <div id={styles.income}>+₱{totalPerCategory[i].toLocaleString()}</div></div>
+  )
 
   return (
     <div className={styles.container}>

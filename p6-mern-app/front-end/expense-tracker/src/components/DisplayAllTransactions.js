@@ -56,10 +56,13 @@ const DisplayAllTransactions = ({ income, expense, dispatch }) => {
         <p>{item?.category}</p>
         <p>{item?.description}</p>
 
-        {item?.type==="income" ?(<p className={styles.income}>₱ {item?.value}</p>): (<p className={styles.expense}>-₱ {item?.value}</p>)}
-        
-      
-        <div>
+        {item?.type === "income" ? (
+          <p className={styles.income}>+₱ {item?.value.toLocaleString()}</p>
+        ) : (
+          <p className={styles.expense}>-₱ {item?.value.toLocaleString()}</p>
+        )}
+
+        <div className={styles.buttons}>
           <button onClick={handleEdit} id={item?._id}>
             edit
           </button>
@@ -95,15 +98,28 @@ const DisplayAllTransactions = ({ income, expense, dispatch }) => {
           </div>
           <br></br>
           <div className={styles.lowpart}>
-            <b className={styles.income}>income {`: +${totalIncome()}`}</b> <br></br>
+            <b className={styles.income}>
+              income {`: +₱${totalIncome().toLocaleString()}`}
+            </b>
+            <br></br>
             <br />
-            <b className={styles.expense}>expense {`: -${totalExpense()}`}</b>
+            <b className={styles.expense}>
+              expense {`: -₱${totalExpense().toLocaleString()}`}
+            </b>
             <br></br>
             ----------------------
             <br />
             <h4>
-            total: {(totalIncome() - totalExpense())>0? <i className={styles.income}>+{totalIncome() - totalExpense()}</i> : <i className={styles.expense}>{totalIncome() - totalExpense()}</i>}
-              
+              total:
+              {totalIncome() - totalExpense() > 0 ? (
+                <i className={styles.income}>
+                  +₱{(totalIncome() - totalExpense()).toLocaleString()}
+                </i>
+              ) : (
+                <i className={styles.expense}>
+                  -₱{(totalExpense() - totalIncome()).toLocaleString()}
+                </i>
+              )}
             </h4>
           </div>
         </div>

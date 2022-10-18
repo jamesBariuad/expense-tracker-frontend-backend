@@ -41,19 +41,25 @@ const DisplayExpense = ({ expense }) => {
       },
     ],
   };
+
+  
+  const display = uniqueCategories.map((cat,i)=>
+     <div key={cat} className={styles.transactionItems}>{cat}: <div id={styles.expense}>-₱{totalPerCategory[i].toLocaleString()}</div></div>
+  )
+
   
 
-  const display = expense?.map((expense) => (
-    <div key={expense._id} className={styles.transactionItems}>
-      description: {expense.description}
-      <br></br>
-      category: {expense.category}
-      <br></br>
-      Php {expense.value}
-      <br></br>
-      {new Date(expense?.date).toDateString()}
-    </div>
-  ));
+  // const display = expense?.map((expense) => (
+  //   <div key={expense._id} className={styles.transactionItems}>
+  //     description: {expense.description}
+  //     <br></br>
+  //     category: {expense.category}
+  //     <br></br>
+  //     Php {expense.value}
+  //     <br></br>
+  //     {new Date(expense?.date).toDateString()}
+  //   </div>
+  // ));
 
 
 
@@ -62,7 +68,9 @@ const DisplayExpense = ({ expense }) => {
       <div style={{ width: 300 }}>
         <ExpenseChart expense={expenseData} />
       </div>
-      <div className={styles.data}>{display}</div>
+      <div className={styles.data}>
+        {display}
+      </div>
     </div>
   );
 };

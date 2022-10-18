@@ -38,7 +38,7 @@ const AddBudget = ({ toggleBudget }) => {
       ? alert("input an amount")
       : axios
           .post("http://localhost:8080/api/v1/budgets", budgetDetails)
-          .then(toggleBudget());
+          .then(response => response.status===200?toggleBudget():false);
   };
 
   const categoryOptions = expenseCategories.map((category) => (

@@ -5,10 +5,12 @@ import { useState } from "react";
 import AddBudget from "./AddBudget";
 import DeleteBudget from "./DeleteBudget";
 
-const Budgets = ({ reloadBudgetsdddddddddd }) => {
+const Budgets = ({  }) => {
   const [budgetData, setBudgetData] = useState([]);
   const [monthlyExpense, setMonthlyExpense] = useState([]);
   const [toggleAddBudget, setToggleAddBudget] = useState(false);
+
+  
 
   useEffect(() => {
     axios
@@ -23,8 +25,8 @@ const Budgets = ({ reloadBudgetsdddddddddd }) => {
     axios
       .get("http://localhost:8080/api/v1/budgets")
       .then(
-        (response) => setBudgetData(response.data),
-        setToggleAddBudget(!toggleAddBudget)
+        (response) => response.status=200?(setBudgetData(response.data),
+        setToggleAddBudget(!toggleAddBudget)):false
       );
   };
 
@@ -36,13 +38,13 @@ const Budgets = ({ reloadBudgetsdddddddddd }) => {
     let sum = 0;
     category === "All"
       ? monthlyExpense.map((expense) => {
-          return sum += expense.value;
+          return (sum += expense.value);
         })
       : monthlyExpense.map((expense) => {
           if (expense.category === category) {
-             sum += expense.value;
+            sum += expense.value;
           }
-          return sum
+          return sum;
         });
     return sum;
   };
@@ -57,13 +59,16 @@ const Budgets = ({ reloadBudgetsdddddddddd }) => {
     toggleDelete();
   };
   const deleteConfirmed = (clickedId) => {
-    axios.delete(`http://localhost:8080/api/v1/budgets/${clickedId}`).then(
-      
-    );
     axios
-        .get("http://localhost:8080/api/v1/budgets")
-        .then((response) => setBudgetData(response.data))
-        .then(toggleDelete())
+      .delete(`http://localhost:8080/api/v1/budgets/${clickedId}`)
+      .then((response) =>
+        response.status === 200
+          ? axios
+              .get("http://localhost:8080/api/v1/budgets")
+              .then((response) => setBudgetData(response.data))
+              .then(toggleDelete())
+          : false
+      );
   };
 
   const displayBudgets = budgetData.map((budget) => (
@@ -79,7 +84,7 @@ const Budgets = ({ reloadBudgetsdddddddddd }) => {
 
       <div className={styles.category}>
         <p>{budget.category}</p>
-        <p>Total budget: {budget.amount}</p>
+        <p>Total budget: ₱{budget.amount.toLocaleString()}</p>
       </div>
 
       <div className={styles.percentage}>
@@ -109,11 +114,18 @@ const Budgets = ({ reloadBudgetsdddddddddd }) => {
       </div>
 
       <div className={styles.currspend}>
-        current spend: {getSumOfCategory(budget.category)}
+        current spend: ₱{getSumOfCategory(budget.category).toLocaleString()}
       </div>
+
+      {budget.amount - getSumOfCategory(budget.category)<0?<div className={styles.remspend}>
+        remaining spend: 
+        <div className={styles.exceed}>₱{(budget.amount - getSumOfCategory(budget.category)).toLocaleString()}</div>
+      </div>:
       <div className={styles.remspend}>
-        remaining spend: {budget.amount - getSumOfCategory(budget.category)}
-      </div>
+      remaining spend: 
+      <div className={styles.notexceed}>₱{(budget.amount - getSumOfCategory(budget.category)).toLocaleString()}</div>
+    </div>}
+     
     </div>
   ));
 

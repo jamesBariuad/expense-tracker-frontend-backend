@@ -63,7 +63,7 @@
 .displayitem {
   padding: 1%;
   margin: 1%;
-  width: 45%;
+  width: 30%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -86,5 +86,15 @@
 .expense{
   color: darkred;
 }
+
+.buttons{
+  display: flex;
+}
+
+.buttons button{
+  margin: 0.3em;
+  padding: 0.2em;
+}
+
 
 
